@@ -7,20 +7,28 @@ import java.util.List;
 @Entity
 public class Author {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String nationality;
+
+    @OneToMany(mappedBy = "author")
     private List<Book> books = new ArrayList<>();
 
-    public Author() {}
+    public Author() {
+    }
 
     public Author(String name, String nationality) {
         this.name = name;
         this.nationality = nationality;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public void addBook(Book book) {
+        this.books.add(book);
+        book.setAuthor(this);
+    }
+
     public Long getId() {
         return id;
     }
@@ -45,13 +53,7 @@ public class Author {
         this.nationality = nationality;
     }
 
-    @OneToMany
-    @JoinColumn(name = "author_id")
     public List<Book> getBooks() {
         return books;
-    }
-
-    public void addBook(Book book) {
-        this.books.add(book);
     }
 }

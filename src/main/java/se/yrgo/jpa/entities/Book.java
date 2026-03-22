@@ -1,17 +1,27 @@
 package se.yrgo.jpa.entities;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String genre;
     private int publicationYear;
+
+    @ManyToOne
     private Author author;
 
-    public Book() {}
+    @ManyToMany(mappedBy = "books")
+    private List<Reader> readers = new ArrayList<>();
+
+    public Book() {
+    }
 
     public Book(String title, String genre, int publicationYear) {
         this.title = title;
@@ -19,8 +29,6 @@ public class Book {
         this.publicationYear = publicationYear;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -53,12 +61,15 @@ public class Book {
         this.publicationYear = publicationYear;
     }
 
-    @ManyToOne
     public Author getAuthor() {
         return author;
     }
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    public List<Reader> getReaders() {
+        return readers;
     }
 }

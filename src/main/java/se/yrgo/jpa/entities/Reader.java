@@ -7,20 +7,29 @@ import java.util.List;
 @Entity
 public class Reader {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
+
+    @ManyToMany
+    @JoinTable(name = "reader_book", joinColumns = @JoinColumn(name = "reader_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
     private List<Book> books = new ArrayList<>();
 
-    public Reader() {}
+    public Reader() {
+    }
 
     public Reader(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public void addBook(Book book) {
+        this.books.add(book);
+        book.getReaders().add(this);
+    }
+
     public Long getId() {
         return id;
     }
@@ -45,17 +54,7 @@ public class Reader {
         this.email = email;
     }
 
-    @ManyToMany
-    @JoinTable(
-        name = "reader_book",
-        joinColumns = @JoinColumn(name = "reader_id"),
-        inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
     public List<Book> getBooks() {
         return books;
-    }
-
-    public void addBook(Book book) {
-        this.books.add(book);
     }
 }
