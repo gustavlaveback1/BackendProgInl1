@@ -24,12 +24,14 @@ public class Main {
         Book book4 = new Book("Pride and Prejudice", "Romance", 1813);
         Book book5 = new Book("Emma", "Romance", 1815);
 
+        // Books to author
         author1.addBook(book1);
         author2.addBook(book2);
         author2.addBook(book3);
         author3.addBook(book4);
         author3.addBook(book5);
 
+        //Persist authors and books
         em.persist(author1);
         em.persist(author2);
         em.persist(author3);
@@ -44,6 +46,7 @@ public class Main {
         Reader reader2 = new Reader("Bob", "bob@example.com");
         Reader reader3 = new Reader("Charlie", "charlie@example.com");
 
+        //Books to readers
         reader1.addBook(book1);
         reader1.addBook(book4);
         reader2.addBook(book2);
@@ -52,6 +55,7 @@ public class Main {
         reader3.addBook(book1);
         reader3.addBook(book3);
 
+        // Persist readers
         em.persist(reader1);
         em.persist(reader2);
         em.persist(reader3);
@@ -59,7 +63,7 @@ public class Main {
         em.getTransaction().commit();
 
         System.out.println("All data sparad i databasen!");
-        
+
         em.close();
         emf.close();
     }
