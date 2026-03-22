@@ -1,5 +1,7 @@
 package se.yrgo.jpa;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import se.yrgo.jpa.entities.Author;
 import se.yrgo.jpa.entities.Book;
@@ -12,6 +14,7 @@ public class Main {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPAQueriesPU");
         EntityManager em = emf.createEntityManager();
 
+        // Uppgift 1. Skapa och lagra data.
         em.getTransaction().begin();
 
         Author author1 = new Author("Gabriel García Márquez", "Colombian");
@@ -31,7 +34,7 @@ public class Main {
         author3.addBook(book4);
         author3.addBook(book5);
 
-        //Persist authors and books
+        // Persist authors and books
         em.persist(author1);
         em.persist(author2);
         em.persist(author3);
@@ -46,7 +49,7 @@ public class Main {
         Reader reader2 = new Reader("Bob", "bob@example.com");
         Reader reader3 = new Reader("Charlie", "charlie@example.com");
 
-        //Books to readers
+        // Books to readers
         reader1.addBook(book1);
         reader1.addBook(book4);
         reader2.addBook(book2);
@@ -61,9 +64,32 @@ public class Main {
         em.persist(reader3);
 
         em.getTransaction().commit();
-
         System.out.println("All data sparad i databasen!");
 
+        // Uppgift 2. Hämta alla böcker av en specifik författare (JPQL)
+        em.getTransaction().begin();
+        String requiredName = "haruki murakami";
+        TypedQuery<Author> query = em.createQuery(
+                "SELECT a from Author a WHERE LOWER(a.name) = :name",
+                Author.class);
+
+        query.setParameter("name", requiredName);
+
+        List<Author> result = query.getResultList();
+        for (Author a : result) {
+            System.out.println("Författare: " + a.getName());
+
+            System.out.println("Böcker:");
+            for (Book b : a.getBooks()) {
+                System.out.println(b.getTitle());
+            }
+        }
+        em.getTransaction().commit();
+
+        //Uppgift 3. Hämta alla läsare( readers) som har läst en viss bok (member of)
+        em.getTransaction().begin();
+
+        em.getTransaction().commit();
         em.close();
         emf.close();
     }
