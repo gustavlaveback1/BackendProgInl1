@@ -72,4 +72,10 @@ public class Book {
     public List<Reader> getReaders() {
         return readers;
     }
+
+
+    @Override
+    public String toString() {
+        return "title=" + title;
+    }
 }

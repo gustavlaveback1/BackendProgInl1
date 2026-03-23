@@ -56,4 +56,9 @@ public class Author {
     public List<Book> getBooks() {
         return books;
     }
+
+    @Override
+    public String toString() {
+        return "Author name=" + name + ", books=" + books;
+    }
 }

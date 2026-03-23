@@ -113,6 +113,19 @@ public class Main {
         }
         em.getTransaction().commit();
 
+        System.out.println("----------------------");
+
+        // Uppgift 4. Hämta författare vars böcker har lästs av minst en läsare (join)
+        em.getTransaction().begin();
+
+        Query authorWithReader = em.createQuery("SELECT a from Author a JOIN a.books b JOIN b.readers r", Author.class);
+        List<Author> authorResultList = authorWithReader.getResultList();
+
+        for (Author a : authorResultList) {
+            System.out.println(a);
+        }
+        em.getTransaction().commit();
+
         em.close();
         emf.close();
     }
