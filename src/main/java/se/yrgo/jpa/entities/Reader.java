@@ -57,4 +57,8 @@ public class Reader {
     public List<Book> getBooks() {
         return books;
     }
+
+    public String toString() {
+        return "Reader:" + name + ", email: " + email;
+    }
 }

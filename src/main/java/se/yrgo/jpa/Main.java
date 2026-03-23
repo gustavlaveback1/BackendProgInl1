@@ -86,10 +86,33 @@ public class Main {
         }
         em.getTransaction().commit();
 
-        //Uppgift 3. Hämta alla läsare( readers) som har läst en viss bok (member of)
+        System.out.println("----------------------");
+
+        // Uppgift 3. Hämta alla readers som har läst en viss bok (member of)
         em.getTransaction().begin();
 
+        String bookNameString = "pride and prejudice";
+
+        TypedQuery<Book> bookQuery = em.createQuery(
+                "SELECT b FROM Book b WHERE LOWER(b.title) = :title",
+                Book.class);
+        bookQuery.setParameter("title", bookNameString);
+
+        Book book = bookQuery.getSingleResult();
+
+        TypedQuery<Reader> readersOneBook = em.createQuery(
+                "SELECT r FROM Reader r WHERE :book MEMBER OF r.books",
+                Reader.class);
+        readersOneBook.setParameter("book", book);
+
+        List<Reader> bookResult = readersOneBook.getResultList();
+
+        System.out.println("People who are reading Pride and Prejudice:");
+        for (Reader re : bookResult) {
+            System.out.println(re);
+        }
         em.getTransaction().commit();
+
         em.close();
         emf.close();
     }
