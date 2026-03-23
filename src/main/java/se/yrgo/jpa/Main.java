@@ -118,12 +118,36 @@ public class Main {
         // Uppgift 4. Hämta författare vars böcker har lästs av minst en läsare (join)
         em.getTransaction().begin();
 
-        Query authorWithReader = em.createQuery("SELECT a from Author a JOIN a.books b JOIN b.readers r", Author.class);
+        Query authorWithReader = em.createQuery("SELECT DISTINCT a from Author a JOIN a.books b JOIN b.readers r",
+                Author.class);
         List<Author> authorResultList = authorWithReader.getResultList();
 
         for (Author a : authorResultList) {
             System.out.println(a);
         }
+        em.getTransaction().commit();
+
+        System.out.println("----------------------");
+        // Uppgift 5. Räkna antalet böcker per författare
+        em.getTransaction().begin();
+
+        List<Object[]> numberOfBooks = em.createQuery("SELECT a.name, COUNT(b) from Author a " +
+                "JOIN a.books b GROUP BY a.name").getResultList();
+
+        for (Object[] resultNumberOfBooks : numberOfBooks) {
+            String authorName = (String) resultNumberOfBooks[0];
+            Long amountOfBooks = (Long) resultNumberOfBooks[1];
+            System.out.println("Author: " + authorName + ", amount of books: " + amountOfBooks);
+        }
+
+        em.getTransaction().commit();
+
+        System.out.println("----------------------");
+        // Uppgift 6. Named Query - Hämta böcker efter genre
+        em.getTransaction().begin();
+
+        
+
         em.getTransaction().commit();
 
         em.close();
