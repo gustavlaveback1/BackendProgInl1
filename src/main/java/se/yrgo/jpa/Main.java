@@ -1,7 +1,6 @@
 package se.yrgo.jpa;
 
 import java.util.List;
-
 import jakarta.persistence.*;
 import se.yrgo.jpa.entities.Author;
 import se.yrgo.jpa.entities.Book;
@@ -146,7 +145,15 @@ public class Main {
         // Uppgift 6. Named Query - Hämta böcker efter genre
         em.getTransaction().begin();
 
-        
+        List<Book> booksByGenre = em
+                .createNamedQuery("Book.findByGenre", Book.class)
+                .setParameter("genre", "Romance")
+                .getResultList();
+
+        System.out.println("Romance books:");
+        for (Book b : booksByGenre) {
+            System.out.println(b.getTitle());
+        }
 
         em.getTransaction().commit();
 
